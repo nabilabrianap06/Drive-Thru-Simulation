@@ -550,7 +550,7 @@ function App() {
             <input 
               type="range" 
               min="0.5" 
-              max="4.0" 
+              max="6.0" 
               step="0.1" 
               value={params.arrivalRate}
               onChange={(e) => setParams({ ...params, arrivalRate: parseFloat(e.target.value) })}
@@ -566,7 +566,7 @@ function App() {
             <input 
               type="range" 
               min="0.5" 
-              max="4.0" 
+              max="6.0" 
               step="0.1" 
               value={params.orderServiceRate}
               onChange={(e) => setParams({ ...params, orderServiceRate: parseFloat(e.target.value) })}
@@ -582,7 +582,7 @@ function App() {
               </div>
               <input 
                 type="range" 
-                min="1.0" 
+                min="0.5" 
                 max="6.0" 
                 step="0.1" 
                 value={params.payServiceRate}
@@ -600,7 +600,7 @@ function App() {
             <input 
               type="range" 
               min="0.5" 
-              max="4.0" 
+              max="6.0" 
               step="0.1" 
               value={params.pickupServiceRate}
               onChange={(e) => setParams({ ...params, pickupServiceRate: parseFloat(e.target.value) })}
