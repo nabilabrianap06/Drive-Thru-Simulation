@@ -621,7 +621,7 @@ function App() {
               value={params.maxQueueCapacity}
               onChange={(e) => setParams({ ...params, maxQueueCapacity: parseInt(e.target.value) })}
             />
-            <span className="text-[10px] text-gray-500 font-mono">Queue limit before customer bypasses/leaves (Balking)</span>
+            <span className="text-[10px] text-gray-500 font-mono">Sigmoid Balking: customers start leaving at &gt;50% full, rising sharply at 70%, and 100% at capacity</span>
           </div>
 
           <div className="experiment-card">
