@@ -219,14 +219,17 @@ export class DriveThruSimulation {
 
       // Handle station state machines when car is at a service slot
       if (car.currentSlot === 4) { // ORDER STATION
-        if (car.state === 'order_queue') {
-          car.state = 'ordering';
-          car.serviceRemaining = car.serviceTimes.order;
-        }
-        if (car.state === 'ordering') {
-          car.serviceRemaining -= dt;
-          if (car.serviceRemaining <= 0) {
-            car.state = 'order_finished';
+        // ONLY start and process service once the vehicle has physically arrived at the slot
+        if (car.lastVisitedSlot === 4) {
+          if (car.state === 'order_queue') {
+            car.state = 'ordering';
+            car.serviceRemaining = car.serviceTimes.order;
+          }
+          if (car.state === 'ordering') {
+            car.serviceRemaining -= dt;
+            if (car.serviceRemaining <= 0) {
+              car.state = 'order_finished';
+            }
           }
         }
         // Try to move to next slot if ordering finished
@@ -239,14 +242,17 @@ export class DriveThruSimulation {
 
       if (car.currentSlot === 7) { // PAYMENT STATION (DUAL MODE ONLY)
         if (this.windowMode === 'dual') {
-          if (car.state === 'pay_queue') {
-            car.state = 'paying';
-            car.serviceRemaining = car.serviceTimes.pay;
-          }
-          if (car.state === 'paying') {
-            car.serviceRemaining -= dt;
-            if (car.serviceRemaining <= 0) {
-              car.state = 'pay_finished';
+          // ONLY start and process service once the vehicle has physically arrived at the slot
+          if (car.lastVisitedSlot === 7) {
+            if (car.state === 'pay_queue') {
+              car.state = 'paying';
+              car.serviceRemaining = car.serviceTimes.pay;
+            }
+            if (car.state === 'paying') {
+              car.serviceRemaining -= dt;
+              if (car.serviceRemaining <= 0) {
+                car.state = 'pay_finished';
+              }
             }
           }
           // Try to move to Slot 8 if paid
@@ -265,38 +271,44 @@ export class DriveThruSimulation {
 
       if (car.currentSlot === 10) { // PICKUP STATION (AND PAYMENT IN SINGLE WINDOW)
         if (this.windowMode === 'dual') {
-          if (car.state === 'pickup_queue') {
-            car.state = 'picking_up';
-            car.serviceRemaining = car.serviceTimes.pickup;
-          }
-          if (car.state === 'picking_up') {
-            car.serviceRemaining -= dt;
-            if (car.serviceRemaining <= 0) {
-              car.state = 'pickup_finished';
+          // ONLY start and process service once the vehicle has physically arrived at the slot
+          if (car.lastVisitedSlot === 10) {
+            if (car.state === 'pickup_queue') {
+              car.state = 'picking_up';
+              car.serviceRemaining = car.serviceTimes.pickup;
+            }
+            if (car.state === 'picking_up') {
+              car.serviceRemaining -= dt;
+              if (car.serviceRemaining <= 0) {
+                car.state = 'pickup_finished';
+              }
             }
           }
         } else {
           // Single-window mode: payment + pickup happen here sequentially
-          if (car.state === 'pay_queue') {
-            car.state = 'paying';
-            car.serviceRemaining = car.serviceTimes.pay;
-          }
-          if (car.state === 'paying') {
-            car.serviceRemaining -= dt;
-            if (car.serviceRemaining <= 0) {
-              // After paying, transition to pickup phase (next step will start it)
-              car.state = 'pickup_queue';
+          // ONLY start and process service once the vehicle has physically arrived at the slot
+          if (car.lastVisitedSlot === 10) {
+            if (car.state === 'pay_queue') {
+              car.state = 'paying';
+              car.serviceRemaining = car.serviceTimes.pay;
             }
-          }
-          // Separate the pickup phase so it doesn't start in the same tick as pay finishes
-          if (car.state === 'pickup_queue' && car.serviceRemaining <= 0) {
-            car.state = 'picking_up';
-            car.serviceRemaining = car.serviceTimes.pickup;
-          }
-          if (car.state === 'picking_up') {
-            car.serviceRemaining -= dt;
-            if (car.serviceRemaining <= 0) {
-              car.state = 'pickup_finished';
+            if (car.state === 'paying') {
+              car.serviceRemaining -= dt;
+              if (car.serviceRemaining <= 0) {
+                // After paying, transition to pickup phase (next step will start it)
+                car.state = 'pickup_queue';
+              }
+            }
+            // Separate the pickup phase so it doesn't start in the same tick as pay finishes
+            if (car.state === 'pickup_queue' && car.serviceRemaining <= 0) {
+              car.state = 'picking_up';
+              car.serviceRemaining = car.serviceTimes.pickup;
+            }
+            if (car.state === 'picking_up') {
+              car.serviceRemaining -= dt;
+              if (car.serviceRemaining <= 0) {
+                car.state = 'pickup_finished';
+              }
             }
           }
         }
