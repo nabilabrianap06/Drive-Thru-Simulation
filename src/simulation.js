@@ -322,8 +322,10 @@ export class DriveThruSimulation {
           }
         }
       } else {
-        // Mark car for removal after the loop (don't mutate array while iterating)
-        car._exited = true;
+        // Mark car for removal only when it has visually reached the final exit slot
+        if (car.lastVisitedSlot === SLOTS.length - 1) {
+          car._exited = true;
+        }
       }
     }
 
