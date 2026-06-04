@@ -153,7 +153,17 @@ export class DriveThruSimulation {
       // Calculate current queue length (excluding cars that are departing)
       const currentQueueLength = this.cars.filter(c => c.currentSlot >= 0 && c.currentSlot <= 10).length;
 
+      // Calculate balking probability based on Sigmoid/Exponential curve (Paling Realistis)
+      const ratio = currentQueueLength / this.maxQueueCapacity;
+      let p_balk = 0;
       if (currentQueueLength >= this.maxQueueCapacity) {
+        p_balk = 1.0; // Penuh -> Pasti pergi (balk)
+      } else {
+        // Sigmoid curve: starts very low, rises sharply around 70% capacity (ratio = 0.7)
+        p_balk = 1 / (1 + Math.exp(-10 * (ratio - 0.7)));
+      }
+
+      if (Math.random() < p_balk) {
         // Customer balks (leaves immediately)
         this.stats.balkedCount++;
       } else {
