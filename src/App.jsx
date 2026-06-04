@@ -231,50 +231,50 @@ function App() {
     ctx.strokeStyle = isOrderBusy ? '#ef4444' : '#4ade80';
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.arc(SLOTS[4].x + 40, SLOTS[4].y, 16, 0, Math.PI * 2);
+    ctx.arc(SLOTS[4].x + 40, SLOTS[4].y, 18, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
     // Speaker post visual label
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 9px var(--sans)';
+    ctx.font = "bold 9px 'Outfit', system-ui, -apple-system, sans-serif";
     ctx.textAlign = 'center';
     ctx.fillText('ORDER', SLOTS[4].x + 40, SLOTS[4].y - 2);
-    ctx.font = '500 8px var(--mono)';
+    ctx.font = "500 8px 'JetBrains Mono', monospace";
     ctx.fillStyle = isOrderBusy ? '#f87171' : '#a7f3d0';
     ctx.fillText(isOrderBusy ? 'BUSY' : 'IDLE', SLOTS[4].x + 40, SLOTS[4].y + 8);
 
     // Station 2: Payment Window (Slot 7)
     if (simRef.current?.windowMode === 'dual') {
       const isPayBusy = simRef.current?.cars.some(c => c.currentSlot === 7 && c.state === 'paying');
-      // Draw building window box at top (70px wide, rounded corners)
+      // Draw building window box at top (84px wide, 36px tall, rounded corners)
       ctx.fillStyle = isPayBusy ? 'rgba(239, 68, 68, 0.25)' : 'rgba(74, 222, 128, 0.15)';
       ctx.strokeStyle = isPayBusy ? '#ef4444' : '#4ade80';
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.roundRect(SLOTS[7].x - 35, SLOTS[7].y - 45, 70, 20, 4);
+      ctx.roundRect(SLOTS[7].x - 42, SLOTS[7].y - 61, 84, 36, 4);
       ctx.fill();
       ctx.stroke();
       // text
       ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 8px var(--sans)';
+      ctx.font = "bold 9px 'Outfit', system-ui, -apple-system, sans-serif";
       ctx.textAlign = 'center';
-      ctx.fillText('PAYMENT', SLOTS[7].x, SLOTS[7].y - 35);
-      ctx.font = '500 7px var(--mono)';
+      ctx.fillText('PAYMENT', SLOTS[7].x, SLOTS[7].y - 47);
+      ctx.font = "500 8px 'JetBrains Mono', monospace";
       ctx.fillStyle = isPayBusy ? '#f87171' : '#a7f3d0';
-      ctx.fillText(isPayBusy ? 'SERVING' : 'IDLE', SLOTS[7].x, SLOTS[7].y - 27);
+      ctx.fillText(isPayBusy ? 'SERVING' : 'IDLE', SLOTS[7].x, SLOTS[7].y - 34);
     } else {
       // payment window grayed out / disabled
       ctx.fillStyle = '#1e2030';
       ctx.strokeStyle = 'rgba(255,255,255,0.05)';
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.roundRect(SLOTS[7].x - 35, SLOTS[7].y - 45, 70, 20, 4);
+      ctx.roundRect(SLOTS[7].x - 42, SLOTS[7].y - 61, 84, 36, 4);
       ctx.fill();
       ctx.stroke();
       ctx.fillStyle = '#6b7280';
-      ctx.font = 'bold 8px var(--sans)';
+      ctx.font = "bold 9px 'Outfit', system-ui, -apple-system, sans-serif";
       ctx.textAlign = 'center';
-      ctx.fillText('BYPASSED', SLOTS[7].x, SLOTS[7].y - 33);
+      ctx.fillText('BYPASSED', SLOTS[7].x, SLOTS[7].y - 40);
     }
 
     // Station 3: Pickup Window (Slot 10)
@@ -285,17 +285,17 @@ function App() {
     ctx.strokeStyle = isPickupBusy ? '#ef4444' : '#4ade80';
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.roundRect(SLOTS[10].x - 35, SLOTS[10].y - 45, 70, 20, 4);
+    ctx.roundRect(SLOTS[10].x - 47, SLOTS[10].y - 61, 94, 36, 4);
     ctx.fill();
     ctx.stroke();
     // text
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 8px var(--sans)';
+    ctx.font = "bold 9px 'Outfit', system-ui, -apple-system, sans-serif";
     ctx.textAlign = 'center';
-    ctx.fillText(simRef.current?.windowMode === 'single' ? 'PAY & PICKUP' : 'PICKUP WINDOW', SLOTS[10].x, SLOTS[10].y - 35);
-    ctx.font = '500 7px var(--mono)';
+    ctx.fillText(simRef.current?.windowMode === 'single' ? 'PAY & PICKUP' : 'PICKUP WINDOW', SLOTS[10].x, SLOTS[10].y - 47);
+    ctx.font = "500 8px 'JetBrains Mono', monospace";
     ctx.fillStyle = isPickupBusy ? '#f87171' : '#a7f3d0';
-    ctx.fillText(isPickupBusy ? 'PREPARING' : 'READY', SLOTS[10].x, SLOTS[10].y - 27);
+    ctx.fillText(isPickupBusy ? 'PREPARING' : 'READY', SLOTS[10].x, SLOTS[10].y - 34);
 
     // DRAW SLOT INFO / CAPACITIES
     // Show queue counts
@@ -303,7 +303,7 @@ function App() {
     const orderQueueCount = activeCars.filter(c => c.currentSlot >= 0 && c.currentSlot < 4).length;
     
     ctx.fillStyle = '#9ca3af';
-    ctx.font = '10px var(--mono)';
+    ctx.font = "10px 'JetBrains Mono', monospace";
     ctx.textAlign = 'left';
     ctx.fillText(`Driveway Queue: ${orderQueueCount}/${simRef.current?.maxQueueCapacity}`, 20, 25);
     ctx.fillStyle = 'rgba(255,255,255,0.05)';
@@ -434,7 +434,7 @@ function App() {
 
       // Render details (ID label and small status pill above car on canvas, un-rotated)
       ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 9px var(--mono)';
+      ctx.font = "bold 9px 'JetBrains Mono', monospace";
       ctx.textAlign = 'center';
       // Draw ID sticker on the roof of the car
       ctx.fillText(`#${car.id}`, car.x, car.y - 2);
@@ -448,7 +448,7 @@ function App() {
 
     // Draw static environment structures (Lawn/trees, drive-thru pathway labels)
     ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
-    ctx.font = 'bold 16px var(--sans)';
+    ctx.font = "bold 16px 'Outfit', system-ui, -apple-system, sans-serif";
     ctx.textAlign = 'center';
     ctx.fillText('RESTAURANT DRIVE-THRU', canvas.width / 2, canvas.height - 25);
   };
