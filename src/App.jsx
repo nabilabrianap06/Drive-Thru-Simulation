@@ -231,30 +231,33 @@ function App() {
     ctx.strokeStyle = isOrderBusy ? '#ef4444' : '#4ade80';
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.arc(SLOTS[4].x + 35, SLOTS[4].y, 14, 0, Math.PI * 2);
+    ctx.arc(SLOTS[4].x + 40, SLOTS[4].y, 16, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
     // Speaker post visual label
     ctx.fillStyle = '#ffffff';
     ctx.font = 'bold 9px var(--sans)';
     ctx.textAlign = 'center';
-    ctx.fillText('ORDER', SLOTS[4].x + 35, SLOTS[4].y - 3);
+    ctx.fillText('ORDER', SLOTS[4].x + 40, SLOTS[4].y - 2);
     ctx.font = '500 8px var(--mono)';
     ctx.fillStyle = isOrderBusy ? '#f87171' : '#a7f3d0';
-    ctx.fillText(isOrderBusy ? 'BUSY' : 'IDLE', SLOTS[4].x + 35, SLOTS[4].y + 7);
+    ctx.fillText(isOrderBusy ? 'BUSY' : 'IDLE', SLOTS[4].x + 40, SLOTS[4].y + 8);
 
     // Station 2: Payment Window (Slot 7)
     if (simRef.current?.windowMode === 'dual') {
       const isPayBusy = simRef.current?.cars.some(c => c.currentSlot === 7 && c.state === 'paying');
-      // Draw building window box at top
+      // Draw building window box at top (70px wide, rounded corners)
       ctx.fillStyle = isPayBusy ? 'rgba(239, 68, 68, 0.25)' : 'rgba(74, 222, 128, 0.15)';
       ctx.strokeStyle = isPayBusy ? '#ef4444' : '#4ade80';
       ctx.lineWidth = 2;
-      ctx.fillRect(SLOTS[7].x - 25, SLOTS[7].y - 45, 50, 20);
-      ctx.strokeRect(SLOTS[7].x - 25, SLOTS[7].y - 45, 50, 20);
+      ctx.beginPath();
+      ctx.roundRect(SLOTS[7].x - 35, SLOTS[7].y - 45, 70, 20, 4);
+      ctx.fill();
+      ctx.stroke();
       // text
       ctx.fillStyle = '#ffffff';
       ctx.font = 'bold 8px var(--sans)';
+      ctx.textAlign = 'center';
       ctx.fillText('PAYMENT', SLOTS[7].x, SLOTS[7].y - 35);
       ctx.font = '500 7px var(--mono)';
       ctx.fillStyle = isPayBusy ? '#f87171' : '#a7f3d0';
@@ -264,10 +267,13 @@ function App() {
       ctx.fillStyle = '#1e2030';
       ctx.strokeStyle = 'rgba(255,255,255,0.05)';
       ctx.lineWidth = 1;
-      ctx.fillRect(SLOTS[7].x - 25, SLOTS[7].y - 45, 50, 20);
-      ctx.strokeRect(SLOTS[7].x - 25, SLOTS[7].y - 45, 50, 20);
+      ctx.beginPath();
+      ctx.roundRect(SLOTS[7].x - 35, SLOTS[7].y - 45, 70, 20, 4);
+      ctx.fill();
+      ctx.stroke();
       ctx.fillStyle = '#6b7280';
       ctx.font = 'bold 8px var(--sans)';
+      ctx.textAlign = 'center';
       ctx.fillText('BYPASSED', SLOTS[7].x, SLOTS[7].y - 33);
     }
 
@@ -278,11 +284,14 @@ function App() {
     ctx.fillStyle = isPickupBusy ? 'rgba(239, 68, 68, 0.25)' : 'rgba(74, 222, 128, 0.15)';
     ctx.strokeStyle = isPickupBusy ? '#ef4444' : '#4ade80';
     ctx.lineWidth = 2;
-    ctx.fillRect(SLOTS[10].x - 25, SLOTS[10].y - 45, 50, 20);
-    ctx.strokeRect(SLOTS[10].x - 25, SLOTS[10].y - 45, 50, 20);
+    ctx.beginPath();
+    ctx.roundRect(SLOTS[10].x - 35, SLOTS[10].y - 45, 70, 20, 4);
+    ctx.fill();
+    ctx.stroke();
     // text
     ctx.fillStyle = '#ffffff';
     ctx.font = 'bold 8px var(--sans)';
+    ctx.textAlign = 'center';
     ctx.fillText(simRef.current?.windowMode === 'single' ? 'PAY & PICKUP' : 'PICKUP WINDOW', SLOTS[10].x, SLOTS[10].y - 35);
     ctx.font = '500 7px var(--mono)';
     ctx.fillStyle = isPickupBusy ? '#f87171' : '#a7f3d0';
